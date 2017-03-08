@@ -8,8 +8,10 @@ import java.util.IllegalFormatException;
  */
 
 public class BinarTree {
-    private Cell root;
+    public  BinarTree(){
 
+    }
+    private Cell root;
     public class Cell {
         private Cell parent;
         private Cell left;
@@ -18,6 +20,60 @@ public class BinarTree {
 
         public int getKey() {
             return key;
+        }
+
+        private Cell(int x) {
+            this.key = x;
+        }
+
+    }
+
+    public Cell findCell(int x) {
+        Cell temp = root;
+        if (temp == null) return null;
+        while (temp.key != x) {
+            if (x < temp.key) temp = temp.left;
+            else temp = temp.right;
+            if (temp == null) return null;
+        }
+        return temp;
+    }
+
+    public boolean find(int x) {
+        return (findCell(x) != null);
+    }
+
+    public void add(int x) {
+        Cell newCell = new Cell(x);
+        if (!find(x)) {
+            if (root == null) root = newCell;
+            else {
+                Cell temp = root;
+                while (temp != newCell) {
+                    Cell parent = temp;
+                    if (x < temp.key) {
+                        temp = temp.left;
+                        if (temp == null) {
+                            parent.left = newCell;
+                            newCell.parent = parent;
+                            temp = newCell;
+                        }
+                    } else {
+                        temp = temp.right;
+                        if (temp == null) {
+                            parent.right = newCell;
+                            newCell.parent = parent;
+                            temp = newCell;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void remove(int x) {
+        if (find(x)) {
+
         }
     }
 
@@ -31,58 +87,4 @@ public class BinarTree {
         return false;
     }
 
-    public boolean find(int x) {
-        if (root == null) return false;
-        else {
-            Cell temp = root;
-            while (temp != null) {
-                if (temp.key == x) {
-                    temp = null;
-                    return true;
-                }
-                if (x < temp.key) temp = temp.left;
-                if (x > temp.key) temp = temp.right;
-            }
-        }
-        return false;
-    }
-
-    public void add(int x) {
-        if (!find(x)) {
-            if (root == null) {
-                Cell root = new Cell();
-                root.key = x;
-            } else {
-                Cell temp = root;
-                while (true) {
-                    if (x < temp.key) {
-                        if (temp.left == null) {
-                            Cell cell = new Cell();
-                            cell.key = x;
-                            cell.parent = temp;
-                            temp.left = cell;
-                            break;
-                        } else temp = temp.left;
-
-                    }
-                    if (x > temp.key) {
-                        if (temp.right == null) {
-                            Cell cell = new Cell();
-                            cell.key = x;
-                            cell.parent = temp;
-                            temp.right = cell;
-                            break;
-                        } else temp = temp.right;
-
-                    }
-                }
-            }
-        }
-    }
-
-    public void remove(int x) {
-        if (find(x)) {
-
-        }
-    }
 }
