@@ -10,7 +10,17 @@ public class Tests {
     @Test
     public void find() {
         tree.add(10);
+        tree.add(5);
         assertTrue(tree.find(10));
+        assertTrue(tree.find(5));
+    }
+
+    @Test
+    public void remove() {
+        tree.add(10);
+        tree.add(5);
+        tree.remove(5);
+        assertFalse(tree.find(5));
     }
 }
 

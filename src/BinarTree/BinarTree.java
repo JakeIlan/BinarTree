@@ -44,8 +44,8 @@ public class BinarTree {
     }
 
     public void add(int x) {
-        Cell newCell = new Cell(x);
         if (!find(x)) {
+            Cell newCell = new Cell(x);
             if (root == null) root = newCell;
             else {
                 Cell temp = root;
@@ -73,8 +73,62 @@ public class BinarTree {
 
     public void remove(int x) {
         if (find(x)) {
-
+            Cell delCell = findCell(x);
+            Cell parent = delCell.parent;
+            Cell left = delCell.left;
+            Cell right = delCell.right;
+            if (left == null && right == null) {
+                if (x < parent.key) parent.left = null;
+                else parent.right = null;
+            } else if (left == null) {
+                if (x > parent.key) parent.right = right;
+                else parent.left = right;
+                right.parent = parent;
+            } else if (right == null) {
+                if (x > parent.key) parent.right = left;
+                else parent.left = left;
+                left.parent = parent;
+            } else {
+                if (left.right == null) {
+                    if (x > parent.key) parent.right = left;
+                    else parent.left = left;
+                    left.right = delCell.right;
+                } else {
+                    Cell temp = left.right;
+                    Cell tempParent = left;
+                    while (temp.right != null) {
+                        tempParent = temp;
+                        temp = temp.right;
+                    }
+                    delCell.key = temp.key;
+                    if (temp.left == null) tempParent.right = null;
+                    else {
+                        tempParent.right = temp.left;
+                        temp.left.parent = tempParent;
+                    }
+                }
+            }
         }
+    }
+
+    public String info(int key) {
+        Cell cell = findCell(key);
+        return ("Parent - " + cell.parent.key + "; Left Child - " + cell.left.key + "; Right Child - " + cell.right.key);
+    }
+
+    public String infoParent(int key) {
+        Cell cell = findCell(key);
+        return ("Parent - " + cell.parent.key + ";");
+    }
+
+    public String infoLeft(int key) {
+        Cell cell = findCell(key);
+        return ("Left - " + cell.left.key + ";");
+    }
+
+    public String infoRight(int key) {
+        Cell cell = findCell(key);
+        return ("Right - " + cell.right.key + ";");
     }
 
     @Override
