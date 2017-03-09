@@ -18,8 +18,24 @@ public class BinarTree {
         private Cell right;
         private int key;
 
-        public int getKey() {
-            return key;
+        public int getKey(int x) {
+            Cell cell = findCell(x);
+            return cell.key;
+        }
+
+        public Cell getLeft(int x) {
+            Cell cell = findCell(x);
+            return cell.left;
+        }
+
+        public Cell getRight(int x) {
+            Cell cell = findCell(x);
+            return cell.right;
+        }
+
+        public Cell getParent(int x) {
+            Cell cell = findCell(x);
+            return cell.parent;
         }
 
         private Cell(int x) {
@@ -111,23 +127,23 @@ public class BinarTree {
         }
     }
 
-    public String info(int key) {
-        Cell cell = findCell(key);
+    public String info(int x) {
+        Cell cell = findCell(x);
         return ("Parent - " + cell.parent.key + "; Left Child - " + cell.left.key + "; Right Child - " + cell.right.key);
     }
 
-    public String infoParent(int key) {
-        Cell cell = findCell(key);
+    public String infoParent(int x) {
+        Cell cell = findCell(x);
         return ("Parent - " + cell.parent.key + ";");
     }
 
-    public String infoLeft(int key) {
-        Cell cell = findCell(key);
+    public String infoLeft(int x) {
+        Cell cell = findCell(x);
         return ("Left - " + cell.left.key + ";");
     }
 
-    public String infoRight(int key) {
-        Cell cell = findCell(key);
+    public String infoRight(int x) {
+        Cell cell = findCell(x);
         return ("Right - " + cell.right.key + ";");
     }
 
