@@ -1,5 +1,6 @@
 package BinarTree;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.IllegalFormatException;
 
@@ -42,7 +43,20 @@ public class BinarTree {
             this.key = x;
         }
 
+        @Override
+        public String toString() {
+            return ("Key - " + key + "; Parent - " + parent.key + "; Left Child - " + left.key + "; Right Child - " + right.key);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = 1;
+            result = 31 * result + key;
+            return result;
+        }
     }
+
+    private ArrayList<Integer> elements = new ArrayList<>();
 
     public Cell findCell(int x) {
         Cell temp = root;
@@ -60,31 +74,32 @@ public class BinarTree {
     }
 
     public void add(int x) {
-        if (!find(x)) {
-            Cell newCell = new Cell(x);
-            if (root == null) root = newCell;
-            else {
-                Cell temp = root;
-                while (temp != newCell) {
-                    Cell parent = temp;
-                    if (x < temp.key) {
-                        temp = temp.left;
-                        if (temp == null) {
-                            parent.left = newCell;
-                            newCell.parent = parent;
-                            temp = newCell;
-                        }
-                    } else {
-                        temp = temp.right;
-                        if (temp == null) {
-                            parent.right = newCell;
-                            newCell.parent = parent;
-                            temp = newCell;
-                        }
+        Cell newCell = new Cell(x);
+        if (root == null) root = newCell;
+        else {
+            Cell temp = root;
+            while (temp != newCell) {
+                Cell parent = temp;
+                if (x < temp.key) {
+                    temp = temp.left;
+                    if (temp == null) {
+                        parent.left = newCell;
+                        newCell.parent = parent;
+                        temp = newCell;
+                        elements.add(x);
+                    }
+                } else {
+                    temp = temp.right;
+                    if (temp == null) {
+                        parent.right = newCell;
+                        newCell.parent = parent;
+                        temp = newCell;
+                        elements.add(x);
                     }
                 }
             }
         }
+
     }
 
     public void remove(int x) {
@@ -124,37 +139,54 @@ public class BinarTree {
                     }
                 }
             }
+            elements.remove(x);
         }
     }
 
-    public String info(int x) {
+
+
+    public String infoString(int x) {
         Cell cell = findCell(x);
         return ("Parent - " + cell.parent.key + "; Left Child - " + cell.left.key + "; Right Child - " + cell.right.key);
     }
 
-    public String infoParent(int x) {
-        Cell cell = findCell(x);
-        return ("Parent - " + cell.parent.key + ";");
+    public int infoParent(int x) {
+        return findCell(x).parent.key;
     }
 
-    public String infoLeft(int x) {
-        Cell cell = findCell(x);
-        return ("Left - " + cell.left.key + ";");
+    public int infoLeft(int x) {
+        return findCell(x).left.key;
     }
 
-    public String infoRight(int x) {
-        Cell cell = findCell(x);
-        return ("Right - " + cell.right.key + ";");
+    public int infoRight(int x) {
+        return findCell(x).right.key;
+    }
+
+    @Override
+    public String toString() {
+        return elements.toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj instanceof Cell) {
-            Cell other = (Cell) obj;
-            return ((Cell) obj).key == other.key;
+        if (obj == this) {
+            return true;
         }
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+        BinarTree other = (BinarTree) obj;
+        if (elements == other.elements) return true;
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 1;
+        for (int i = 0; i < elements.size() - 1; i++) {
+            result = 31 * result + elements.get(i);
+        }
+        return result;
     }
 
 }
